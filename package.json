@@ -12,8 +12,4 @@
     "react native",
     "ios"
   ],
-  "dependencies": {
-    "react": "^16.8.6",
-    "react-native": "^0.59.5"
-  }
 }
