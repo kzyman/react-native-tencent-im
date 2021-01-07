@@ -11,10 +11,10 @@
 RCT_EXPORT_MODULE();
 typedef UInt32 uint32;
 
-RCT_EXPORT_METHOD(initEngine:(int)sdkAppId isCoach:(BOOL)isCoach resolve:(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
+RCT_EXPORT_METHOD(initEngine:(int)sdkAppId resolve:(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
 {
   // 初始化引擎,初始化单例
-  [[RCTTICCoreManager sharedInstance] initEngine: sdkAppId isCoach:isCoach delegate:self];
+  [[RCTTICCoreManager sharedInstance] initEngine: sdkAppId delegate:self];
   resolve(@"1");
 //  RCTLogInfo(@"sdkAppId: %d", sdkAppId);
 }
@@ -33,31 +33,39 @@ RCT_EXPORT_METHOD(callMethod:
 {
   // 方法调用
 //  [RCTTICCoreManager sharedInstance];
-  [[RCTTICCoreManager sharedInstance] callMethod: methodName params:params resolve:resolve reject:reject];
+  [[RCTTICCoreManager sharedInstance] callMethod: methodName params:params];
+  resolve(@"1");
+  
 }
 // 解散整个组
-RCT_EXPORT_METHOD(dismissGroup)
+RCT_EXPORT_METHOD(dismissGroup:(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
 {
 //  [RCTTICCoreManager sharedInstance];
   
   [[RCTTICCoreManager sharedInstance] dismissGroup];
+  resolve(@"1");
 }
 // 注销引擎
-RCT_EXPORT_METHOD(unInitEngine)
+RCT_EXPORT_METHOD(unInitEngine  :(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
 {
   // 方法调用
   
   [[RCTTICCoreManager sharedInstance] unInitEngine];
+  resolve(@"1");
 }
 #pragma mark - listener
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[@"BorderviewReady"];
+  return @[@"BorderviewReady", @"JoinChannelSuccess", @"JoinChannelError"];
 }
 
 - (void)viewReady
 {
-  RCTLogInfo(@"开始1");
   [self sendEventWithName:@"BorderviewReady" body:@{}];
+}
+- (void)JoinChannelCallbac: (NSString *) sendName
+{
+  RCTLogInfo(@"加入频道的状态回调 %@", sendName);
+  [self sendEventWithName:sendName body:@{}];
 }
 @end

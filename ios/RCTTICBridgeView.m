@@ -11,7 +11,6 @@ RCT_EXPORT_MODULE(TICBridgeView);
 - (UIView *)view
 {
   UIView * a= [[[RCTTICCoreManager sharedInstance] getBoardController] getBoardRenderView];
-  RCTLogInfo(@"sdkAppId: %@ 是什么 %d", a,  [[[RCTTICCoreManager sharedInstance] getBoardController] isDataSyncEnable]);
   return a;
 }
 

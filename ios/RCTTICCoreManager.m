@@ -3,10 +3,8 @@
 #import <MapKit/MapKit.h>
 #import <React/RCTLog.h>
 #import <CoreGraphics/CGBase.h>
-#define BorderviewReady @"BorderviewReady"
 @interface RCTTICCoreManager ()
   @property (nonatomic, assign) int sdkAppId;
-  @property (nonatomic, assign) BOOL isCoach;
   @property (nonatomic, strong) id delegate;
   @property (nonatomic, strong) NSString *groupId;
   @property (nonatomic, strong) NSString *userId;
@@ -28,9 +26,8 @@
     });
     return instance;
 }
-- (void) initEngine: (int)sdkAppId isCoach:(BOOL)isCoach delegate:(id)delegate{
+- (void) initEngine: (int)sdkAppId delegate:(id)delegate{
   _sdkAppId= sdkAppId;
-  _isCoach = isCoach;
   _delegate = delegate;
 }
 - (void) joinChannel: (NSString *)classId userId:(NSString *)userId userSig:(NSString *)userSig {
@@ -72,7 +69,7 @@
       [[TIMGroupManager sharedInstance] joinGroup: classId msg:nil succ:^{
         // 加入 IM 群组成功
         // 此时可以调用白板初始化接口创建白板
-        RCTLogInfo(@"成功到最后一11");
+//        RCTLogInfo(@"成功到最后一11");
         [ws joinChannelReal: classId userId:userId userSig:userSig];
 
       } fail:^(int code, NSString *msg) {
@@ -102,9 +99,7 @@
 {
   // 赋值白板，别处通过单例获取这个白板
   _boardView = [_boardController getBoardRenderView];
-  RCTLogInfo(@"调用开始 %@", _delegate);
   [_delegate performSelector:@selector(viewReady)];
-  RCTLogInfo(@"开始2");
 }
 - (TEduBoardController *)getBoardController
 {
@@ -112,7 +107,6 @@
 }
 // 解散群组
 - (void) dismissGroup {
-  RCTLogInfo(@"接触的分组 %@ %d", _groupId, [_groupId isKindOfClass:[NSString class]]);
   dispatch_sync(dispatch_get_main_queue(), ^{
     [[V2TIMManager sharedInstance] dismissGroup:_groupId succ:^{
       // 解散 IM 群组成功
@@ -135,10 +129,8 @@
     [_boardController unInit];
   });
 }
-- (void) callMethod: (NSString *) methodName params:(NSMutableDictionary *) params resolve:(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject {
+- (void) callMethod: (NSString *) methodName params:(NSMutableDictionary *) params {
     // 动态调用各个方法
-  RCTLogInfo(@"methodName: %@", methodName);
-  
   dispatch_sync(dispatch_get_main_queue(), ^{
     if ([methodName isEqualToString:@"setToolType"]) {
       // 设置白板工具, 这里包含直线，随意曲线，椭圆,方形, 鼠标等
@@ -175,17 +167,10 @@
     } else if ([methodName isEqualToString:@"addElement"]) {
       // 添加元素
       [_boardController addElement :  [RCTConvert NSString: [params objectForKey:@"url"]] type: [RCTConvert int: [params objectForKey:@"type"]]];
-    } else if ([methodName isEqualToString:@"redo"]) {
-      // 是否允许涂鸦
-      [_boardController setDrawEnable: [RCTConvert BOOL:[params objectForKey:@"enable"]]];
-    } else if ([methodName isEqualToString:@"redo"]) {
-      // 是否允许涂鸦
-      [_boardController setDrawEnable: [RCTConvert BOOL:[params objectForKey:@"enable"]]];
-    } else if ([methodName isEqualToString:@"redo"]) {
+    } else if ([methodName isEqualToString:@"setDrawEnable"]) {
       // 是否允许涂鸦
       [_boardController setDrawEnable: [RCTConvert BOOL:[params objectForKey:@"enable"]]];
     }
-    resolve(@"1");
   });
 }
 @end
