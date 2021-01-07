@@ -11,7 +11,7 @@ class TxEducationEngine {
      * @param {function} callback - 回调函数
      */
     addListener(name, callback) {
-        RtcEngineEvent.addListener(name, (e) => {
+        RtcEngineEvent.addListener(name, e => {
             callback(e);
         });
     }
@@ -26,7 +26,9 @@ class TxEducationEngine {
     /**
      * 解散群组,只有群主可以操作
      */
-    async dismissGroup() {}
+    async dismissGroup() {
+        await TICBridgeManager.dismissGroup();
+    }
     /**
      * 释放白板引擎
      */
@@ -91,6 +93,12 @@ class TxEducationEngine {
      * @param {string} color - 只支持rgba
      */
     async setBrushColor(color) {
+        a.replace('rgba(', '')
+            .replace(')', '')
+            .split(',')
+            .map(() => {
+                return parseFloat(i);
+            });
         return await TICBridgeManager.callMethod('setBrushColor', { color });
     }
     /**
@@ -105,6 +113,12 @@ class TxEducationEngine {
      * @param {string} color - 只支持rgba
      */
     async setTextColor(color) {
+        a.replace('rgba(', '')
+            .replace(')', '')
+            .split(',')
+            .map(() => {
+                return parseFloat(i);
+            });
         return await TICBridgeManager.callMethod('setTextColor', { color });
     }
     /**
@@ -146,4 +160,4 @@ class TxEducationEngine {
         return await TICBridgeManager.callMethod('setDrawEnable', { enable });
     }
 }
-export default new TxEducationEngine()
+export default new TxEducationEngine();
