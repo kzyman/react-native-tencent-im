@@ -1,0 +1,49 @@
+#import "RCTTICBridgeManager.h"
+#import <UIKit/UIKit.h>
+#import <React/RCTConvert.h>
+#import <React/RCTLog.h>
+
+// 这里专门抛出给RN进行调用的接口
+#import "RCTXIMBridgeManager.h"
+@implementation IMEngineManager
+RCT_EXPORT_MODULE();
+typedef UInt32 uint32;
+
+RCT_EXPORT_METHOD(initEngine:(int)sdkAppId resolve:(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
+{
+  // 初始化引擎,初始化单例
+  [[RCTTICCoreManager sharedInstance] initEngine: sdkAppId delegate:self];
+  resolve(@"1");
+}
+
+RCT_EXPORT_METHOD(joinChannel:(NSString *)classId userId:(NSString *)userId userSig:(NSString *)userSig resolve:(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
+{
+  // 加入到频道里面
+  [[RCTTICCoreManager sharedInstance] joinChannel: classId userId:userId userSig:userSig];
+  resolve(@"1");
+
+}
+// 注销引擎
+RCT_EXPORT_METHOD(unInitEngine  :(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
+{
+  [[RCTTICCoreManager sharedInstance] unInitEngine];
+  resolve(@"1");
+}
+// 发送消息
+RCT_EXPORT_METHOD(sendMessage:(NSString *)message resolve:(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
+{  
+  [[RCTTICCoreManager sharedInstance] sendMessage:message];
+  resolve(@"1");
+}
+#pragma mark - listener
+- (NSArray<NSString *> *)supportedEvents
+{
+  return @[ @"JoinChannelSuccess", @"JoinChannelError", @"groupMessage"];
+}
+
+- (void)JoinRoomCallback: (NSDictionary *) body
+{
+  RCTLogInfo(@"加入频道的状态回调 %@", body);
+    [self sendEventWithName:[body objectForKey:@"type"] body:body];
+}
+@end
