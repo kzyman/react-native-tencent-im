@@ -1,8 +1,8 @@
-#import "RCTXIMCoreManager.h"
+#import "RCTTXIMCoreManager.h"
 #import <React/RCTLog.h>
 #import <CoreGraphics/CGBase.h>
 #import <ImSDK/ImSDK.h>
-@interface RCTTICCoreManager ()<V2TIMAdvancedMsgListener>
+@interface RCTTXIMCoreManager ()<V2TIMAdvancedMsgListener>
   @property (nonatomic, assign) int sdkAppId;
   @property (nonatomic, strong) id delegate;
   @property (nonatomic, strong) NSString *groupId;
@@ -10,15 +10,15 @@
   @property (nonatomic, strong) NSString *userSig;
 @end
 
-@implementation RCTTICCoreManager
+@implementation RCTTXIMCoreManager
 //白板视图容器
 + (instancetype)sharedInstance
 {
-    static RCTTICCoreManager *instance = nil;
+    static RCTTXIMCoreManager *instance = nil;
     static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^{
-        instance = [[RCTTICCoreManager alloc] init];;
+        instance = [[RCTTXIMCoreManager alloc] init];;
     });
     return instance;
 }
@@ -39,7 +39,7 @@
 }
 - (void) initIMM: (NSString *)classId userId:(NSString *)userId userSig:(NSString *)userSig  {
   RCTLogInfo(@"roomUuid加入房间开始");
-  RCTTICCoreManager *ws = self;
+  RCTTXIMCoreManager *ws = self;
   [[V2TIMManager sharedInstance] login:userId userSig:userSig succ:^{
       [[V2TIMManager sharedInstance] removeAdvancedMsgListener:ws];
       [[V2TIMManager sharedInstance] addAdvancedMsgListener:ws];

@@ -2,7 +2,7 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTViewManager.h>
 #import <ImSDK/ImSDK.h>
-@interface RCTTICCoreManager : NSObject
+@interface RCTTXIMCoreManager : NSObject
 /**
  * 获取单例
  **/
