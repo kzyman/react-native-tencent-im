@@ -4,7 +4,7 @@
 #import <React/RCTLog.h>
 
 // 这里专门抛出给RN进行调用的接口
-#import "RCTTXICoreManager.h"
+#import "RCTTXIMCoreManager.h"
 @implementation IMEngineManager
 RCT_EXPORT_MODULE();
 typedef UInt32 uint32;
