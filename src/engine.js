@@ -46,6 +46,12 @@ class IMEngine {
         await IMEngineManager.joinChannel(classId, userId, userSig);
     }
     /**
+     * 退出频道
+     */
+    async leaveChannel() {
+        await IMEngineManager.leaveChannel();
+    }
+    /**
      *
      * @param {string} message -发送的信息
      */

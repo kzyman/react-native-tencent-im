@@ -37,6 +37,19 @@
     [self initIMM: classId userId:userId userSig:userSig];
 
 }
+- (void) leaveChannel {
+      [[TIMGroupManager sharedInstance] quitGroup: _groupId succ:^{
+        // 退出IM群组
+        RCTLogInfo(@"退出房间成功");
+        NSDictionary *body =@{@"type": @"leaveChannelSuccess"};
+        [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
+      } fail:^(int code, NSString *msg) {
+            RCTLogInfo(@"退出房间失败 %@", msg);
+            NSDictionary *body =@{@"type": @"leaveChannelError", @"msg": msg, @"code": @(code)};
+            [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
+      }];
+
+}
 - (void) initIMM: (NSString *)classId userId:(NSString *)userId userSig:(NSString *)userSig  {
   RCTLogInfo(@"roomUuid加入房间开始");
   RCTTXIMCoreManager *ws = self;

@@ -10,5 +10,7 @@
 - (void) initEngine: (int)sdkAppId delegate:(id)delegate;
 - (void) joinChannel: (NSString *)classId userId:(NSString *)userId userSig:(NSString *)userSig;
 - (void) unInitEngine;
+- (void) leaveChannel;
 - (void) sendMessage: (NSString *)message;
+- 
 @end

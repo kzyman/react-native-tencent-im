@@ -23,6 +23,13 @@ RCT_EXPORT_METHOD(joinChannel:(NSString *)classId userId:(NSString *)userId user
   resolve(@"1");
 
 }
+RCT_EXPORT_METHOD(leaveChannel:(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
+{
+  // 离开频道里面
+  [[RCTTXIMCoreManager sharedInstance] leaveChannel];
+  resolve(@"1");
+
+}
 // 注销引擎
 RCT_EXPORT_METHOD(unInitEngine  :(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
 {
@@ -38,7 +45,7 @@ RCT_EXPORT_METHOD(sendMessage:(NSString *)message resolve:(RCTPromiseResolveBloc
 #pragma mark - listener
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[ @"JoinChannelSuccess", @"JoinChannelError", @"groupMessage"];
+  return @[ @"JoinChannelSuccess", @"JoinChannelError", @"groupMessage", @"leaveChannelSuccess", @"leaveChannelError"];
 }
 
 - (void)JoinRoomCallback: (NSDictionary *) body
