@@ -11,19 +11,27 @@ class IMEngine {
      * @param {function} callback - 回调函数
      */
     addListener(name, callback) {
-        RtcEngineEvent.addListener(name, (e) => {
+        RtcEngineEvent.addListener(name, e => {
+            console.log(e, '有消息哦来了', callback);
             callback(e);
         });
+    }
+    removeListener(name, callback) {
+        RtcEngineEvent.removeListener(name, callback);
     }
     /**
      * 释放白板引擎
      */
     async unInitEngine() {
+        const keys = ['JoinChannelSuccess', 'JoinChannelError', 'groupMessage'];
+        for (const key of keys) {
+            RtcEngineEvent.removeAllListeners(key);
+        }
         await IMEngineManager.unInitEngine();
     }
     /**
      * 腾讯IM
-     * @param {string} sdkAppid -sdkAppid
+     * @param {number} sdkAppid -sdkAppid
      */
     async initEngine(sdkAppid) {
         await IMEngineManager.initEngine(sdkAppid);

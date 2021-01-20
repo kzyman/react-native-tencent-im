@@ -80,9 +80,9 @@
 - (void) sendMessage: (NSString *)message {
   
 //  NSData *jsonData = [RCTConvert NSData: message];
- V2TIMMessage *sendData = [[V2TIMManager sharedInstance] createTextMessage:message];
+  V2TIMMessage *sendData = [[V2TIMManager sharedInstance] createTextMessage:message];
 //  V2TIMMessage *sendData = [[V2TIMManager sharedInstance] createCustomMessage:jsonData];
-  [[V2TIMManager sharedInstance] sendMessage:message
+  [[V2TIMManager sharedInstance] sendMessage:sendData
                                     receiver:nil
                                      groupID:_groupId
                                     priority:V2TIM_PRIORITY_HIGH
