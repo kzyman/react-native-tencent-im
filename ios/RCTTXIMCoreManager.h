@@ -12,5 +12,4 @@
 - (void) unInitEngine;
 - (void) leaveChannel;
 - (void) sendMessage: (NSString *)message;
-- 
 @end
