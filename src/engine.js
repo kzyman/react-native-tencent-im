@@ -12,7 +12,6 @@ class IMEngine {
      */
     addListener(name, callback) {
         RtcEngineEvent.addListener(name, e => {
-            console.log(e, '有消息哦来了', callback);
             callback(e);
         });
     }

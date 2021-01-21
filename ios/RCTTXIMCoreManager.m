@@ -2,7 +2,7 @@
 #import <React/RCTLog.h>
 #import <CoreGraphics/CGBase.h>
 #import <ImSDK/ImSDK.h>
-@interface RCTTXIMCoreManager ()<V2TIMAdvancedMsgListener>
+@interface RCTTXIMCoreManager ()<V2TIMAdvancedMsgListener, V2TIMGroupListener>
   @property (nonatomic, assign) int sdkAppId;
   @property (nonatomic, strong) id delegate;
   @property (nonatomic, strong) NSString *groupId;
@@ -41,12 +41,12 @@
       [[TIMGroupManager sharedInstance] quitGroup: _groupId succ:^{
         // 退出IM群组
         RCTLogInfo(@"退出房间成功");
-        NSDictionary *body =@{@"type": @"leaveChannelSuccess"};
-        [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
+        // NSDictionary *body =@{@"type": @"leaveChannelSuccess"};
+        // [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
       } fail:^(int code, NSString *msg) {
             RCTLogInfo(@"退出房间失败 %@", msg);
-            NSDictionary *body =@{@"type": @"leaveChannelError", @"msg": msg, @"code": @(code)};
-            [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
+            // NSDictionary *body =@{@"type": @"leaveChannelError", @"msg": msg, @"code": @(code)};
+            // [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
       }];
 
 }
@@ -84,6 +84,9 @@
 #pragma mark - V2TIMAdvancedMsgListener
 - (void)onRecvNewMessage:(V2TIMMessage *)msg {
   NSLog(@"收到消息了1 %@", msg);
+  if (!msg.textElem) {
+    return;
+  }
   NSDictionary *body =@{@"type": @"groupMessage", @"msg": msg.textElem.text, @"sneder":msg.sender};
   
   [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
