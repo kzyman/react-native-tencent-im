@@ -45,7 +45,7 @@ RCT_EXPORT_METHOD(sendMessage:(NSString *)message resolve:(RCTPromiseResolveBloc
 #pragma mark - listener
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[ @"JoinChannelSuccess", @"JoinChannelError", @"groupMessage", @"leaveChannelSuccess", @"leaveChannelError"];
+  return @[ @"joinChannelSuccess", @"joinChannelError", @"groupMessage", @"leaveChannelSuccess", @"leaveChannelError"];
 }
 
 - (void)JoinRoomCallback: (NSDictionary *) body

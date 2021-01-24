@@ -60,7 +60,7 @@
         // 加入 IM 群组成功
         // 准备发通知
         RCTLogInfo(@"roomUuid加入房间成功");
-        NSDictionary *body =@{@"type": @"JoinChannelSuccess"};
+        NSDictionary *body =@{@"type": @"joinChannelSuccess"};
         [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
       } fail:^(int code, NSString *msg) {
         // 加入 IM 群组失败
@@ -68,11 +68,11 @@
           // 说明已经在群组里了
           // 准备发通知
               RCTLogInfo(@"roomUuid加入房间成功 %@", msg);
-              NSDictionary *body =@{@"type": @"JoinChannelSuccess"};
+              NSDictionary *body =@{@"type": @"joinChannelSuccess"};
               [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
         } else {
               RCTLogInfo(@"roomUuid加入房间失败 %@", msg);
-              NSDictionary *body =@{@"type": @"JoinChannelError", @"msg": msg, @"code": @(code)};
+              NSDictionary *body =@{@"type": @"joinChannelError", @"msg": msg, @"code": @(code)};
               [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
         }
       }];
@@ -87,7 +87,7 @@
   if (!msg.textElem) {
     return;
   }
-  NSDictionary *body =@{@"type": @"groupMessage", @"msg": msg.textElem.text, @"sneder":msg.sender};
+  NSDictionary *body =@{@"type": @"groupMessage", @"msg": msg.textElem.text, @"groupId": msg.groupID, @"sneder":msg.sender};
   
   [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
 };
