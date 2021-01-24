@@ -12,18 +12,19 @@ class IMEngine {
      * 监听函数
      * @param {string} name - 监听的名字 目前只支持 joinChannelSuccess, joinChannelError groupMessage
      * @param {function} callback - 回调函数
-     * @param {bool} onlyCurrentRoom - 是否只接受当前房间的信息
-     * @param {bool} igonreSelf - 忽略自己的消息
+     * @param {bool} onlyCurrentRoom - 是否只接受当前房间的信息 默认true
+     * @param {bool} igonreSelf - 忽略自己的消息 默认trye
      */
-    addListener(name, callback, onlyCurrentRoom, igonreSelf) {
+    addListener(name, callback, onlyCurrentRoom = true, igonreSelf = true) {
         RtcEngineEvent.addListener(name, e => {
             // 过滤掉自己的消息
-            console.log(this.classId, e.groupId, '收到的笑嘻嘻嘻嘻嘻', e, this.userId, 'uuuuuse');
-            if (igonreSelf && this.userId && `${this.userId}` === `${e.sender}`) {
-                return;
-            }
-            if (onlyCurrentRoom && this.classId && this.classId !== e.groupId) {
-                return;
+            if (name === 'groupMessage') {
+                if (igonreSelf && this.userId && `${this.userId}` === `${e.sender}`) {
+                    return;
+                }
+                if (onlyCurrentRoom && this.classId && this.classId !== e.groupId) {
+                    return;
+                }
             }
             callback(e);
         });
