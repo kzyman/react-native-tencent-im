@@ -33,8 +33,18 @@ class IMEngine {
         RtcEngineEvent.removeListener(name, callback);
     }
     /**
+     * 移除所有的监听事件
+     */
+    async removeAllListeners() {
+        const keys = ['joinChannelSuccess', 'joinChannelError', 'groupMessage'];
+        for (const key of keys) {
+            RtcEngineEvent.removeAllListeners(key);
+        }
+    }
+    /**
      * 释放白板引擎
      */
+
     async unInitEngine() {
         const keys = ['joinChannelSuccess', 'joinChannelError', 'groupMessage'];
         for (const key of keys) {
