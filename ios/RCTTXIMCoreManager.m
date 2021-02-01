@@ -40,18 +40,15 @@
 - (void) leaveChannel {
       [[TIMGroupManager sharedInstance] quitGroup: _groupId succ:^{
         // 退出IM群组
-        RCTLogInfo(@"退出房间成功");
         // NSDictionary *body =@{@"type": @"leaveChannelSuccess"};
         // [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
       } fail:^(int code, NSString *msg) {
-            RCTLogInfo(@"退出房间失败 %@", msg);
             // NSDictionary *body =@{@"type": @"leaveChannelError", @"msg": msg, @"code": @(code)};
             // [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
       }];
 
 }
 - (void) initIMM: (NSString *)classId userId:(NSString *)userId userSig:(NSString *)userSig  {
-  RCTLogInfo(@"roomUuid加入房间开始");
   RCTTXIMCoreManager *ws = self;
   [[V2TIMManager sharedInstance] login:userId userSig:userSig succ:^{
       [[V2TIMManager sharedInstance] removeAdvancedMsgListener:ws];
@@ -59,7 +56,6 @@
       [[TIMGroupManager sharedInstance] joinGroup: classId msg:nil succ:^{
         // 加入 IM 群组成功
         // 准备发通知
-        RCTLogInfo(@"roomUuid加入房间成功");
         NSDictionary *body =@{@"type": @"joinChannelSuccess"};
         [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
       } fail:^(int code, NSString *msg) {
@@ -67,23 +63,19 @@
         if(code == 10013) {
           // 说明已经在群组里了
           // 准备发通知
-              RCTLogInfo(@"roomUuid加入房间成功 %@", msg);
               NSDictionary *body =@{@"type": @"joinChannelSuccess"};
               [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
         } else {
-              RCTLogInfo(@"roomUuid加入房间失败 %@", msg);
               NSDictionary *body =@{@"type": @"joinChannelError", @"msg": msg, @"code": @(code)};
               [self->_delegate performSelector:@selector(JoinRoomCallback:) withObject:body];
         }
       }];
   } fail:^(int code, NSString *msg) {
     // 登录 IMSDK 失败
-    RCTLogInfo(@"登录失败 %@",msg);
   }];
 }
 #pragma mark - V2TIMAdvancedMsgListener
 - (void)onRecvNewMessage:(V2TIMMessage *)msg {
-  NSLog(@"收到消息了1 %@", msg);
   if (!msg.textElem) {
     return;
   }
@@ -93,8 +85,8 @@
 };
 
 // 发送消息
-- (void) sendMessage: (NSString *)message {
-  
+- (void) sendMessage: (NSString *)message callback:(RCTResponseSenderBlock)callback {
+
 //  NSData *jsonData = [RCTConvert NSData: message];
   V2TIMMessage *sendData = [[V2TIMManager sharedInstance] createTextMessage:message];
 //  V2TIMMessage *sendData = [[V2TIMManager sharedInstance] createCustomMessage:jsonData];
@@ -106,9 +98,15 @@
                              offlinePushInfo:nil
                                     progress:nil
                                         succ:^{
-    RCTLogInfo(@"消息发送成功");
+    if (callback) {
+        NSDictionary *body =@{@"type": @"success", @"msg":@"消息发送成功"};
+        callback(@[body]);
+    };
   } fail:^(int code, NSString *desc) {
-    RCTLogInfo(@"发型消息失败 %@ %d", desc, code);
+      if (callback) {
+          NSDictionary *body =@{@"type": @"success", @"mesg":desc, @"code":@(code)};
+          callback(@[body]);
+      };
   }];
 }
 

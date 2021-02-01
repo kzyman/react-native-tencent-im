@@ -37,10 +37,9 @@ RCT_EXPORT_METHOD(unInitEngine  :(RCTPromiseResolveBlock) resolve reject:(RCTPro
   resolve(@"1");
 }
 // 发送消息
-RCT_EXPORT_METHOD(sendMessage:(NSString *)message resolve:(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
-{  
-  [[RCTTXIMCoreManager sharedInstance] sendMessage:message];
-  resolve(@"1");
+RCT_EXPORT_METHOD(sendMessage:(NSString *)message callback:(RCTResponseSenderBlock) callback)
+{
+    [[RCTTXIMCoreManager sharedInstance] sendMessage:message callback:callback];
 }
 #pragma mark - listener
 - (NSArray<NSString *> *)supportedEvents

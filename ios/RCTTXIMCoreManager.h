@@ -11,5 +11,5 @@
 - (void) joinChannel: (NSString *)classId userId:(NSString *)userId userSig:(NSString *)userSig;
 - (void) unInitEngine;
 - (void) leaveChannel;
-- (void) sendMessage: (NSString *)message;
+- (void) sendMessage: (NSString *)message callback:(RCTResponseSenderBlock)callback;
 @end

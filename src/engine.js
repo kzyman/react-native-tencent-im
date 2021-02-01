@@ -79,9 +79,13 @@ class IMEngine {
     /**
      *
      * @param {string} message -发送的信息
+     * @param {function} callback -发送的信息
      */
-    async sendMessage(message) {
-        await IMEngineManager.sendMessage(message);
+    async sendMessage(message, callback) {
+        if (!callback) {
+            callback = () => {};
+        }
+        await IMEngineManager.sendMessage(message, callback);
     }
 }
 export default new IMEngine();
