@@ -8,8 +8,11 @@
  **/
 + (instancetype)sharedInstance;
 - (void) initEngine: (int)sdkAppId delegate:(id)delegate;
-- (void) joinChannel: (NSString *)classId userId:(NSString *)userId userSig:(NSString *)userSig;
+- (void) joinChannel: (NSString *)classId userId:(NSString *)userId userName:(NSString *)userName userSig:(NSString *)userSig;
 - (void) unInitEngine;
 - (void) leaveChannel;
+- (void) logout;
+- (void) getGroupMemberList:(NSString *)classId callback:(RCTResponseSenderBlock)callback;
 - (void) sendMessage: (NSString *)message callback:(RCTResponseSenderBlock)callback;
+- (void) setSelfInfo: (NSString *)nickName callback:(RCTResponseSenderBlock)callback;
 @end

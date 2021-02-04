@@ -16,11 +16,25 @@ RCT_EXPORT_METHOD(initEngine:(int)sdkAppId resolve:(RCTPromiseResolveBlock) reso
   resolve(@"1");
 }
 
-RCT_EXPORT_METHOD(joinChannel:(NSString *)classId userId:(NSString *)userId userSig:(NSString *)userSig resolve:(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
+RCT_EXPORT_METHOD(joinChannel:(NSString *)classId userId:(NSString *)userId
+                  userName:(NSString *)userName userSig:(NSString *)userSig resolve:(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
 {
   // 加入到频道里面
-  [[RCTTXIMCoreManager sharedInstance] joinChannel: classId userId:userId userSig:userSig];
+  [[RCTTXIMCoreManager sharedInstance] joinChannel: classId userId:userId
+                                          userName:userName userSig:userSig];
   resolve(@"1");
+
+}
+RCT_EXPORT_METHOD(getGroupMemberList: (NSString *)classId callback:(RCTResponseSenderBlock) callback)
+{
+  // 获取群成员信息
+    [[RCTTXIMCoreManager sharedInstance] getGroupMemberList:classId callback:callback];
+
+}
+RCT_EXPORT_METHOD(logout)
+{
+  // 退出登录里面
+  [[RCTTXIMCoreManager sharedInstance] logout];
 
 }
 RCT_EXPORT_METHOD(leaveChannel:(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
@@ -44,10 +58,10 @@ RCT_EXPORT_METHOD(sendMessage:(NSString *)message callback:(RCTResponseSenderBlo
 #pragma mark - listener
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[ @"joinChannelSuccess", @"joinChannelError", @"groupMessage", @"leaveChannelSuccess", @"leaveChannelError"];
+  return @[ @"joinChannelSuccess", @"joinChannelError", @"groupMessage", @"leaveChannelSuccess", @"leaveChannelError", @"onMemberInfoChanged", @"onMemberEnter"];
 }
 
-- (void)JoinRoomCallback: (NSDictionary *) body
+- (void)ImCallback: (NSDictionary *) body
 {
   RCTLogInfo(@"加入频道的状态回调 %@", body);
     [self sendEventWithName:[body objectForKey:@"type"] body:body];

@@ -4,6 +4,6 @@
 #import <React/RCTEventEmitter.h>
 
 @interface IMEngineManager : RCTEventEmitter <RCTBridgeModule>
--(void) JoinRoomCallback: (NSDictionary *) body ;
+-(void) ImCallback: (NSDictionary *) body ;
 @end
 
