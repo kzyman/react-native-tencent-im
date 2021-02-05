@@ -9,7 +9,6 @@
 + (instancetype)sharedInstance;
 - (void) initEngine: (int)sdkAppId delegate:(id)delegate;
 - (void) login: (NSString *)userId userName:(NSString *)userName userSig:(NSString *)userSig;
-
 - (void) joinChannel: (NSString *)classId userId:(NSString *)userId userName:(NSString *)userName userSig:(NSString *)userSig;
 - (void) unInitEngine;
 - (void) leaveChannel;

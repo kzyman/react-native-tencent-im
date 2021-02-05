@@ -15,11 +15,11 @@ RCT_EXPORT_METHOD(initEngine:(int)sdkAppId resolve:(RCTPromiseResolveBlock) reso
   [[RCTTXIMCoreManager sharedInstance] initEngine: sdkAppId delegate:self];
   resolve(@"1");
 }
-RCT_EXPORT_METHOD(logiin:(NSString *)userId
+RCT_EXPORT_METHOD(login:(NSString *)userId
                   userName:(NSString *)userName userSig:(NSString *)userSig resolve:(RCTPromiseResolveBlock) resolve reject:(RCTPromiseRejectBlock) reject)
 {
   // 登录
-  [[RCTTXIMCoreManager sharedInstance] joinChannel: classId userId:userId
+  [[RCTTXIMCoreManager sharedInstance] login:userId
                                           userName:userName userSig:userSig];
   resolve(@"1");
 
