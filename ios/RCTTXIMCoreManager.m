@@ -48,6 +48,22 @@
       }];
 
 }
+- (void) login: (NSString *)userId userName:(NSString *)userName userSig:(NSString *)userSig {
+  RCTTXIMCoreManager *ws = self;
+  [[V2TIMManager sharedInstance] login:userId userSig:userSig succ:^{
+      [[V2TIMManager sharedInstance] removeAdvancedMsgListener:ws];
+      [[V2TIMManager sharedInstance] addAdvancedMsgListener:ws];
+      V2TIMUserFullInfo *info = [[V2TIMUserFullInfo alloc] init];
+      info.nickName = userName;
+      [[V2TIMManager sharedInstance] setSelfInfo:info succ:^{
+          //
+      } fail:^(int code, NSString *desc) {
+          //
+      }];
+  } fail:^(int code, NSString *msg) {
+    // 登录 IMSDK 失败
+  }];
+};
 - (void) initIMM: (NSString *)classId userId:(NSString *)userId userName:(NSString *)userName userSig:(NSString *)userSig  {
   RCTTXIMCoreManager *ws = self;
   [[V2TIMManager sharedInstance] login:userId userSig:userSig succ:^{

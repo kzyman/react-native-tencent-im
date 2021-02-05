@@ -36,7 +36,13 @@ class IMEngine {
      * 移除所有的监听事件
      */
     async removeAllListeners() {
-        const keys = ['joinChannelSuccess', 'joinChannelError', 'groupMessage', 'onMemberEnter', 'onMemberInfoChanged'];
+        const keys = [
+            'joinChannelSuccess',
+            'joinChannelError',
+            'groupMessage',
+            'onMemberEnter',
+            'onMemberInfoChanged',
+        ];
         for (const key of keys) {
             RtcEngineEvent.removeAllListeners(key);
         }
@@ -76,6 +82,16 @@ class IMEngine {
         await IMEngineManager.logout();
     }
     /**
+     * 登录
+     * @param {string} userId - 用户的id
+     * @param {string} userName - 用户的昵称
+     * @param {string} userSig - 用户的签名
+     */
+    async login(userId, userName, userSig) {
+        this.userId = userId;
+        await IMEngineManager.login(userId, userName, userSig);
+    }
+    /**
      * 设置个人信息
      * @param {string} nickName - nickName
      */
@@ -89,7 +105,7 @@ class IMEngine {
      * @param {string} userName - 用户的昵称
      * @param {string} userSig - 用户的签名
      */
-    async joinChannel(classId, userId, userName,userSig) {
+    async joinChannel(classId, userId, userName, userSig) {
         this.classId = classId;
         this.userId = userId;
         await IMEngineManager.joinChannel(classId, userId, userName, userSig);
